@@ -6,6 +6,11 @@ export default function Program( node: Node, context: FormatterContext, format: 
 		throw new Error( 'Incorrect node type' );
 	}
 
+	context = {
+		...context,
+		node
+	};
+
 	const innerBody = node.body.map( ( node ) => {
 		return format( node, context, format );
 	} );

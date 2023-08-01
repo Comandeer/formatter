@@ -6,6 +6,11 @@ export default function ReturnStatement( node: Node, context: FormatterContext, 
 		throw new Error( 'Incorrect node type' );
 	}
 
+	context = {
+		...context,
+		node
+	};
+
 	const argument = node.argument != null ? ` ${ format( node.argument, context, format ) }` : '';
 
 	return `return${ argument };`;

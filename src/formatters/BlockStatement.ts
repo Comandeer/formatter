@@ -6,6 +6,11 @@ export default function BlockStatement( node: Node, context: FormatterContext, f
 		throw new Error( 'Incorrect node type' );
 	}
 
+	context = {
+		...context,
+		node
+	};
+
 	const body = node.body.map( ( node ) => {
 		return format( node, context, format );
 	} ).join( '\n' );

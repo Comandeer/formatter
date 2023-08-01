@@ -6,6 +6,11 @@ export default function ExportNamedDeclaration( node: Node, context: FormatterCo
 		throw new TypeError( 'Incorrect node type' );
 	}
 
+	context = {
+		...context,
+		node
+	};
+
 	if ( node.declaration ) {
 		return `export ${ format( node.declaration, context, format ) }`;
 	}

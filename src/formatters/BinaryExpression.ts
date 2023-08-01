@@ -6,5 +6,10 @@ export default function BinaryExpression( node: Node, context: FormatterContext,
 		throw new Error( 'Incorrect node type' );
 	}
 
+	context = {
+		...context,
+		node
+	};
+
 	return `${ format( node.left, context, format ) } ${ node.operator } ${ format( node.right, context, format ) }`;
 }

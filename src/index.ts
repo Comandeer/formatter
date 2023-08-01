@@ -5,7 +5,10 @@ import { Formatter, FormatterContext } from './internal.js';
 
 export default async function format( code: string ): Promise<string> {
 	const program = await parseCode( code );
-	const context = {};
+	const context = {
+		indent: 0,
+		node: program
+	};
 	const formattedCode = formatNode( program, context, formatNode );
 
 	return formattedCode;
