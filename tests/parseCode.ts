@@ -19,3 +19,10 @@ test( 'parseCode() parses TS code', async ( t ) => {
 
 	t.true( isProgram( parsedCode ) );
 } );
+
+test( 'parseCode() parses ESM code', async ( t ) => {
+	const code = 'export default true;';
+	const parsedCode = await parseCode( code );
+
+	t.true( isProgram( parsedCode ) );
+} );
