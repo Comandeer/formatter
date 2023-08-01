@@ -9,8 +9,15 @@ import Program from './formatters/Program.js';
 import ReturnStatement from './formatters/ReturnStatement.js';
 import { Formatter } from './internal.js';
 import TSTypeAnnotation from './formatters/TSTypeAnnotation.js';
+import ExportDefaultDeclaration from './formatters/ExportDefaultDeclaration.js';
+import ArrowFunctionExpression from './formatters/ArrowFunctionExpression.js';
 
 export default new Map<Node['type'], Formatter>( [
+	[
+		'ArrowFunctionExpression',
+		ArrowFunctionExpression
+	],
+
 	[
 		'BinaryExpression',
 		BinaryExpression
@@ -24,6 +31,11 @@ export default new Map<Node['type'], Formatter>( [
 	[
 		'EmptyStatement',
 		EmptyStatement
+	],
+
+	[
+		'ExportDefaultDeclaration',
+		ExportDefaultDeclaration
 	],
 
 	[

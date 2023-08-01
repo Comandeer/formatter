@@ -9,3 +9,7 @@ test( 'format() is a function', ( t ) => {
 test( 'format() formats a simple function', testFormatting, {
 	fixture: '1-simple-function'
 } );
+
+test( 'format() formats a simple arrow function', testFormatting, {
+	fixture: '2-arrow-function'
+} );

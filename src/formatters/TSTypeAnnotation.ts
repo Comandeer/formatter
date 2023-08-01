@@ -9,6 +9,9 @@ export default function TSTypeAnnotation( node: Node ): string {
 		case 'TSNumberKeyword':
 			return 'number';
 
+		case 'TSStringKeyword':
+			return 'string';
+
 		default:
 			return '';
 	}
