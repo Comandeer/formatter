@@ -1,0 +1,74 @@
+{
+  "name": "@comandeer/formatter",
+  "version": "0.0.0",
+  "description": "A simple JS/TS formatter",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/formatter.d.ts",
+      "import": "./dist/formatter.js"
+    }
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "bin": {
+    "cfmt": "./bin/formatter.js"
+  },
+  "files": [
+    "bin",
+    "dist"
+  ],
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "scripts": {
+    "build": "rlb",
+    "lint": "eslint \"./src\" \"./tests\"",
+    "lint-package": "publint",
+    "test": "c8 ava",
+    "version": "npm test && npm run build && npm run lint-package && git add -f bin/ dist/",
+    "postversion": "git rm -r --cached bin/ dist/ && git commit -m \"chore(dist): clean after release [ci skip]\" && git push origin && git push origin --tags",
+    "prepare": "husky install"
+  },
+  "keywords": [
+    "formatter"
+  ],
+  "author": "Comandeer",
+  "license": "MIT",
+  "commitplease": {
+    "nohook": true,
+    "style": "angular",
+    "types": [
+      "feat",
+      "fix",
+      "docs",
+      "style",
+      "refactor",
+      "perf",
+      "test",
+      "build",
+      "ci",
+      "chore",
+      "revert"
+    ],
+    "scope": "\\S+.*"
+  },
+  "devDependencies": {
+    "@comandeer/eslint-config": "^0.11.1",
+    "@comandeer/rollup-lib-bundler": "^0.22.1",
+    "ava": "^5.3.1",
+    "c8": "^8.0.1",
+    "commitplease": "^3.2.0",
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint": "^8.46.0",
+    "execa": "^7.2.0",
+    "husky": "^8.0.3",
+    "publint": "^0.2.0",
+    "tslib": "^2.6.1",
+    "tsx": "^3.12.7",
+    "typescript": "^5.1.6"
+  }
+}
