@@ -1,3 +1,4 @@
+import { Node } from '@babel/types';
 import BinaryExpression from './formatters/BinaryExpression.js';
 import BlockStatement from './formatters/BlockStatement.js';
 import EmptyStatement from './formatters/EmptyStatement.js';
@@ -7,8 +8,9 @@ import Identifier from './formatters/Identifier.js';
 import Program from './formatters/Program.js';
 import ReturnStatement from './formatters/ReturnStatement.js';
 import { Formatter } from './internal.js';
+import TSTypeAnnotation from './formatters/TSTypeAnnotation.js';
 
-export default new Map<string, Formatter>( [
+export default new Map<Node['type'], Formatter>( [
 	[
 		'BinaryExpression',
 		BinaryExpression
@@ -47,5 +49,10 @@ export default new Map<string, Formatter>( [
 	[
 		'ReturnStatement',
 		ReturnStatement
+	],
+
+	[
+		'TSTypeAnnotation',
+		TSTypeAnnotation
 	]
 ] );

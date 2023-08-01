@@ -15,6 +15,10 @@ export default function FunctionDeclaration( node: Node, context: FormatterConte
 	const params = node.params.map( ( param ) => {
 		return format( param, context, format );
 	} ).join( ', ' );
+	const returnType = node.returnType ? `: ${ format( node.returnType, {
+		...context,
+		node: node.returnType
+	}, format ) }` : '';
 
-	return `function ${ functionName }(${ params.length > 0 ? ` ${ params } ` : '' }) ${ format( node.body, context, format ) }`;
+	return `function ${ functionName }(${ params.length > 0 ? ` ${ params } ` : '' })${ returnType } ${ format( node.body, context, format ) }`;
 }

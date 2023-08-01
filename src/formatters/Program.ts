@@ -13,6 +13,8 @@ export default function Program( node: Node, context: FormatterContext, format: 
 
 	const innerBody = node.body.map( ( node ) => {
 		return format( node, context, format );
+	} ).filter( ( node ) => {
+		return node.length > 0;
 	} );
 
 	return `${ innerBody.join( '\n' ) }\n`;
