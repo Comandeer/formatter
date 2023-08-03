@@ -5,6 +5,12 @@ export default async function parseCode( code: string ): Promise<Program> {
 	const { program } = parse( code, {
 		sourceType: 'module',
 		plugins: [
+			[
+				'importAttributes',
+				{
+					deprecatedAssertSyntax: true
+				}
+			],
 			'typescript'
 		]
 	} );
