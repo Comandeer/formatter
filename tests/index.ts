@@ -13,3 +13,7 @@ test( 'format() formats a simple function', testFormatting, {
 test( 'format() formats a simple arrow function', testFormatting, {
 	fixture: '2-arrow-function'
 } );
+
+test( 'format() formats imports', testFormatting, {
+	fixture: '3-imports'
+} );

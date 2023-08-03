@@ -11,6 +11,8 @@ import { Formatter } from './internal.js';
 import TSTypeAnnotation from './formatters/TSTypeAnnotation.js';
 import ExportDefaultDeclaration from './formatters/ExportDefaultDeclaration.js';
 import ArrowFunctionExpression from './formatters/ArrowFunctionExpression.js';
+import ImportDeclaration from './formatters/ImportDeclaration.js';
+import StringLiteral from './formatters/StringLiteral.js';
 
 export default new Map<Node['type'], Formatter>( [
 	[
@@ -54,6 +56,11 @@ export default new Map<Node['type'], Formatter>( [
 	],
 
 	[
+		'ImportDeclaration',
+		ImportDeclaration
+	],
+
+	[
 		'Program',
 		Program
 	],
@@ -61,6 +68,11 @@ export default new Map<Node['type'], Formatter>( [
 	[
 		'ReturnStatement',
 		ReturnStatement
+	],
+
+	[
+		'StringLiteral',
+		StringLiteral
 	],
 
 	[
