@@ -1,10 +1,13 @@
 import { ImportAttribute, ImportDeclaration as ImportDeclarationNode, ImportDefaultSpecifier, ImportNamespaceSpecifier, ImportSpecifier, Node, isImportDeclaration } from '@babel/types';
 import { Formatter, FormatterContext } from '../internal.js';
+import extractNodeFromCode from '../utils/extractNodeFromCode.js';
 
 interface FormattedSpecifier {
 	type: 'default' | 'named';
 	specifier: string;
 }
+
+const assertKeywordRegex = /assert\s*\{/;
 
 export default function ImportDeclaration( node: Node, context: FormatterContext, format: Formatter ): string {
 	if ( !isImportDeclaration( node ) ) {
@@ -85,7 +88,8 @@ function formatAttributes(
 		return '';
 	}
 
-	const keyword = 'with';
+	const importCode = extractNodeFromCode( context.node, context.code );
+	const keyword = importCode !== null && assertKeywordRegex.test( importCode ) ? 'assert' : 'with';
 	const formattedImportAttributes = importAttributes.map( ( importAttribute ) => {
 		const attributeContext = {
 			...context,
