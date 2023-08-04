@@ -13,6 +13,10 @@ import ExportDefaultDeclaration from './formatters/ExportDefaultDeclaration.js';
 import ArrowFunctionExpression from './formatters/ArrowFunctionExpression.js';
 import ImportDeclaration from './formatters/ImportDeclaration.js';
 import StringLiteral from './formatters/StringLiteral.js';
+import IfStatement from './formatters/IfStatement.js';
+import BooleanLiteral from './formatters/BooleanLiteral.js';
+import ExpressionStatement from './formatters/ExpressionStatement.js';
+import NumericLiteral from './formatters/NumericLiteral.js';
 
 export default new Map<Node['type'], Formatter>( [
 	[
@@ -31,6 +35,11 @@ export default new Map<Node['type'], Formatter>( [
 	],
 
 	[
+		'BooleanLiteral',
+		BooleanLiteral
+	],
+
+	[
 		'EmptyStatement',
 		EmptyStatement
 	],
@@ -46,6 +55,11 @@ export default new Map<Node['type'], Formatter>( [
 	],
 
 	[
+		'ExpressionStatement',
+		ExpressionStatement
+	],
+
+	[
 		'FunctionDeclaration',
 		FunctionDeclaration
 	],
@@ -56,8 +70,18 @@ export default new Map<Node['type'], Formatter>( [
 	],
 
 	[
+		'IfStatement',
+		IfStatement
+	],
+
+	[
 		'ImportDeclaration',
 		ImportDeclaration
+	],
+
+	[
+		'NumericLiteral',
+		NumericLiteral
 	],
 
 	[

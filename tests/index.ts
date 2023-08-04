@@ -17,3 +17,7 @@ test( 'format() formats a simple arrow function', testFormatting, {
 test( 'format() formats imports', testFormatting, {
 	fixture: '3-imports'
 } );
+
+test( 'format() formats if statements', testFormatting, {
+	fixture: '4-ifs'
+} );
