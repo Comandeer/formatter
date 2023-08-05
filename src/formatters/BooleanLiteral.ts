@@ -1,6 +1,9 @@
-import { Node, isBooleanLiteral } from '@babel/types';
+import { isBooleanLiteral } from '@babel/types';
+import { FormatterContext } from '../context.js';
 
-export default function BooleanLiteral( node: Node ): string {
+export default function BooleanLiteral( context: FormatterContext ): string {
+	const { node } = context;
+
 	if ( !isBooleanLiteral( node ) ) {
 		throw new Error( 'Incorrect node type' );
 	}

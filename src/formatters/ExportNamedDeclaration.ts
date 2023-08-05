@@ -1,18 +1,17 @@
-import { Node, isExportNamedDeclaration } from '@babel/types';
-import { Formatter, FormatterContext } from '../internal.js';
+import { isExportNamedDeclaration } from '@babel/types';
+import { FormatterContext } from '../context.js';
 
-export default function ExportNamedDeclaration( node: Node, context: FormatterContext, format: Formatter ): string {
+export default function ExportNamedDeclaration( context: FormatterContext ): string {
+	const { node } = context;
+
 	if ( !isExportNamedDeclaration( node ) ) {
 		throw new TypeError( 'Incorrect node type' );
 	}
 
-	context = {
-		...context,
-		node
-	};
-
 	if ( node.declaration ) {
-		return `export ${ format( node.declaration, context, format ) }`;
+		const formattedDeclaration = context.formatDescendant( node.declaration );
+
+		return `export ${ formattedDeclaration }`;
 	}
 
 	return 'export';

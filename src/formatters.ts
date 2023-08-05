@@ -7,7 +7,6 @@ import FunctionDeclaration from './formatters/FunctionDeclaration.js';
 import Identifier from './formatters/Identifier.js';
 import Program from './formatters/Program.js';
 import ReturnStatement from './formatters/ReturnStatement.js';
-import { Formatter } from './internal.js';
 import TSTypeAnnotation from './formatters/TSTypeAnnotation.js';
 import ExportDefaultDeclaration from './formatters/ExportDefaultDeclaration.js';
 import ArrowFunctionExpression from './formatters/ArrowFunctionExpression.js';
@@ -17,6 +16,7 @@ import IfStatement from './formatters/IfStatement.js';
 import BooleanLiteral from './formatters/BooleanLiteral.js';
 import ExpressionStatement from './formatters/ExpressionStatement.js';
 import NumericLiteral from './formatters/NumericLiteral.js';
+import { Formatter } from './formatNode.js';
 
 export default new Map<Node['type'], Formatter>( [
 	[

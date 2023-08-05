@@ -1,17 +1,14 @@
-import { Node, isExpressionStatement } from '@babel/types';
-import { Formatter, FormatterContext } from '../internal.js';
+import { isExpressionStatement } from '@babel/types';
+import { FormatterContext } from '../context.js';
 
-export default function ExpressionStatement( node: Node, context: FormatterContext, format: Formatter ): string {
+export default function ExpressionStatement( context: FormatterContext ): string {
+	const { node } = context;
+
 	if ( !isExpressionStatement( node ) ) {
 		throw new Error( 'Incorrect node type' );
 	}
 
-	context = {
-		...context,
-		node
-	};
-
-	const formattedExpression = format( node.expression, context, format );
+	const formattedExpression = context.formatDescendant( node.expression );
 
 	return `${ formattedExpression };`;
 }

@@ -1,34 +1,40 @@
-import { ArrowFunctionExpression as ArrowFunctionExpressionNode, Node, isArrowFunctionExpression, isBlockStatement } from '@babel/types';
-import { Formatter, FormatterContext } from '../internal.js';
+import { ArrowFunctionExpression as ArrowFunctionExpressionNode, isArrowFunctionExpression, isBlockStatement } from '@babel/types';
+import { FormatterContext } from '../context.js';
 
-export default function ArrowFunctionExpression( node: Node, context: FormatterContext, format: Formatter ): string {
+export default function ArrowFunctionExpression( context: FormatterContext ): string {
+	const { node } = context;
+
 	if ( !isArrowFunctionExpression( node ) ) {
 		throw new TypeError( 'Incorrect node type' );
 	}
 
-	context = {
-		...context,
-		node
-	};
-
 	const params = node.params.map( ( param ) => {
-		return format( param, context, format );
+		return context.formatDescendant( param );
 	} ).join( ', ' );
-	const returnType = node.returnType ? `: ${ format( node.returnType, {
-		...context,
-		node: node.returnType
-	}, format ) }` : '';
-	const body = formatBody( node, context, format );
+	const returnType = formatReturnType( node, context );
+	const body = formatBody( node, context );
 
 	return `( ${ params } )${ returnType } => ${ body }`;
 }
 
-function formatBody( node: ArrowFunctionExpressionNode, context: FormatterContext, format: Formatter ): string {
+function formatReturnType( node: ArrowFunctionExpressionNode, context: FormatterContext ): string {
+	if ( !node.returnType ) {
+		return '';
+	}
+
+	const formattedReturnType = context.formatDescendant( node.returnType );
+
+	return `: ${ formattedReturnType }`;
+}
+
+function formatBody( node: ArrowFunctionExpressionNode, context: FormatterContext ): string {
+	const formattedBody = context.formatDescendant( node.body );
+
 	if ( !isBlockStatement( node.body ) ) {
 		return `{
-	return ${ format( node.body, context, format ) };
+	return ${ formattedBody };
 }`;
 	}
 
-	return format( node.body, context, format );
+	return formattedBody;
 }

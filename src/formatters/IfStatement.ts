@@ -1,29 +1,23 @@
-import { IfStatement as IfStatementNode, Node, isBlockStatement, isIfStatement } from '@babel/types';
-import { Formatter, FormatterContext } from '../internal.js';
+import { IfStatement as IfStatementNode, isBlockStatement, isIfStatement } from '@babel/types';
+import { FormatterContext } from '../context.js';
 
-export default function IfStatement( node: Node, context: FormatterContext, format: Formatter ): string {
+export default function IfStatement( context: FormatterContext ): string {
+	const { node } = context;
+
 	if ( !isIfStatement( node ) ) {
 		throw new Error( 'Incorrect node type' );
 	}
 
-	context = {
-		...context,
-		node
-	};
-	const formattedTest = format( node.test, context, format );
-	const formattedBody = formatBody( node, context, format );
-	const formattedAlternate = node.alternate ? ` else ${ formatAlternate( node, context, format ) }` : '';
+	const formattedTest = context.formatDescendant( node.test );
+	const formattedBody = formatBody( node, context );
+	const formattedAlternate = node.alternate ? ` else ${ formatAlternate( node, context ) }` : '';
 
 	return `if ( ${ formattedTest } ) ${ formattedBody }${ formattedAlternate }`;
 }
 
-function formatBody( node: IfStatementNode, context: FormatterContext, format: Formatter ): string {
+function formatBody( node: IfStatementNode, context: FormatterContext ): string {
 	const body = node.consequent;
-	const bodyContext = {
-		...context,
-		node: body
-	};
-	const formattedBody = format( body, bodyContext, format );
+	const formattedBody = context.formatDescendant( body );
 
 	if ( !isBlockStatement( body ) ) {
 		return `{
@@ -34,24 +28,20 @@ function formatBody( node: IfStatementNode, context: FormatterContext, format: F
 	return formattedBody;
 }
 
-function formatAlternate( node: IfStatementNode, context: FormatterContext, format: Formatter ): string {
+function formatAlternate( node: IfStatementNode, context: FormatterContext ): string {
 	const alternate = node.alternate;
 
 	if ( !alternate ) {
 		return '';
 	}
 
-	const alternateContext = {
-		...context,
-		node: alternate
-	};
-	const formattedBody = format( alternate, alternateContext, format );
+	const formattedAlternate = context.formatDescendant( alternate );
 
 	if ( !isBlockStatement( alternate ) && !isIfStatement( alternate ) ) {
 		return `{
-	${ formattedBody }
+	${ formattedAlternate }
 }`;
 	}
 
-	return formattedBody;
+	return formattedAlternate;
 }

@@ -1,24 +1,37 @@
-import { Node, isFunctionDeclaration } from '@babel/types';
-import { Formatter, FormatterContext } from '../internal.js';
+import { FunctionDeclaration as FunctionDeclarationNode, isFunctionDeclaration } from '@babel/types';
+import { FormatterContext } from '../context.js';
 
-export default function FunctionDeclaration( node: Node, context: FormatterContext, format: Formatter ): string {
+export default function FunctionDeclaration( context: FormatterContext ): string {
+	const { node } = context;
+
 	if ( !isFunctionDeclaration( node ) ) {
 		throw new Error( 'Invalid node type' );
 	}
 
-	context = {
-		...context,
-		node
-	};
-
-	const functionName = node.id != null ? format( node.id, context, format ) : '';
+	const functionName = formatFunctionName( node, context );
 	const params = node.params.map( ( param ) => {
-		return format( param, context, format );
+		return context.formatDescendant( param );
 	} ).join( ', ' );
-	const returnType = node.returnType ? `: ${ format( node.returnType, {
-		...context,
-		node: node.returnType
-	}, format ) }` : '';
+	const returnType = formatReturnType( node, context );
+	const formattedBody = context.formatDescendant( node.body );
 
-	return `function ${ functionName }(${ params.length > 0 ? ` ${ params } ` : '' })${ returnType } ${ format( node.body, context, format ) }`;
+	return `function ${ functionName }(${ params.length > 0 ? ` ${ params } ` : '' })${ returnType } ${ formattedBody }`;
+}
+
+function formatFunctionName( node: FunctionDeclarationNode, context: FormatterContext ): string {
+	if ( !node.id ) {
+		return '';
+	}
+
+	return context.formatDescendant( node.id );
+}
+
+function formatReturnType( node: FunctionDeclarationNode, context: FormatterContext ): string {
+	if ( !node.returnType ) {
+		return '';
+	}
+
+	const formattedReturnType = context.formatDescendant( node.returnType );
+
+	return `: ${ formattedReturnType }`;
 }

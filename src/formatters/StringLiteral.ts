@@ -1,6 +1,9 @@
-import { Node, isStringLiteral } from '@babel/types';
+import { isStringLiteral } from '@babel/types';
+import { FormatterContext } from '../context.js';
 
-export default function StringLiteral( node: Node ): string {
+export default function StringLiteral( context: FormatterContext ): string {
+	const { node } = context;
+
 	if ( !isStringLiteral( node ) ) {
 		throw new Error( 'Incorrect node type' );
 	}

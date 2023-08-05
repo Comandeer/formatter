@@ -1,7 +1,9 @@
-import { Node, isReturnStatement } from '@babel/types';
-import { Formatter, FormatterContext } from '../internal.js';
+import { isReturnStatement } from '@babel/types';
+import { FormatterContext } from '../context.js';
 
-export default function ReturnStatement( node: Node, context: FormatterContext, format: Formatter ): string {
+export default function ReturnStatement( context: FormatterContext ): string {
+	const { node } = context;
+
 	if ( !isReturnStatement( node ) ) {
 		throw new Error( 'Incorrect node type' );
 	}
@@ -11,7 +13,7 @@ export default function ReturnStatement( node: Node, context: FormatterContext, 
 		node
 	};
 
-	const argument = node.argument != null ? ` ${ format( node.argument, context, format ) }` : '';
+	const argument = node.argument != null ? ` ${ context.formatDescendant( node.argument ) }` : '';
 
 	return `return${ argument };`;
 }

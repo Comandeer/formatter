@@ -1,15 +1,15 @@
-import { Node, isBinaryExpression } from '@babel/types';
-import { Formatter, FormatterContext } from '../internal.js';
+import { isBinaryExpression } from '@babel/types';
+import { FormatterContext } from '../context.js';
 
-export default function BinaryExpression( node: Node, context: FormatterContext, format: Formatter ): string {
+export default function BinaryExpression( context: FormatterContext ): string {
+	const { node } = context;
+
 	if ( !isBinaryExpression( node ) ) {
 		throw new Error( 'Incorrect node type' );
 	}
 
-	context = {
-		...context,
-		node
-	};
+	const formattedLeft = context.formatDescendant( node.left );
+	const formattedRight = context.formatDescendant( node.right );
 
-	return `${ format( node.left, context, format ) } ${ node.operator } ${ format( node.right, context, format ) }`;
+	return `${ formattedLeft } ${ node.operator } ${ formattedRight }`;
 }

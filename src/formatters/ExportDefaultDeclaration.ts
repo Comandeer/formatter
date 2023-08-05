@@ -1,15 +1,14 @@
-import { Node, isExportDefaultDeclaration } from '@babel/types';
-import { Formatter, FormatterContext } from '../internal.js';
+import { isExportDefaultDeclaration } from '@babel/types';
+import { FormatterContext } from '../context.js';
 
-export default function ExportDefaultDeclaration( node: Node, context: FormatterContext, format: Formatter ): string {
+export default function ExportDefaultDeclaration( context: FormatterContext ): string {
+	const { node } = context;
+
 	if ( !isExportDefaultDeclaration( node ) ) {
 		throw new TypeError( 'Incorrect node type' );
 	}
 
-	context = {
-		...context,
-		node
-	};
+	const formattedDeclaration = context.formatDescendant( node.declaration );
 
-	return `export default ${ format( node.declaration, context, format ) }`;
+	return `export default ${ formattedDeclaration }`;
 }

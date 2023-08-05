@@ -1,18 +1,15 @@
-import { Node, isBlockStatement } from '@babel/types';
-import { Formatter, FormatterContext } from '../internal.js';
+import { isBlockStatement } from '@babel/types';
+import { FormatterContext } from '../context.js';
 
-export default function BlockStatement( node: Node, context: FormatterContext, format: Formatter ): string {
+export default function BlockStatement( context: FormatterContext ): string {
+	const { node } = context;
+
 	if ( !isBlockStatement( node ) ) {
 		throw new Error( 'Incorrect node type' );
 	}
 
-	context = {
-		...context,
-		node
-	};
-
 	const body = node.body.map( ( node ) => {
-		return format( node, context, format );
+		return context.formatDescendant( node );
 	} ).join( '\n' );
 
 	return `{

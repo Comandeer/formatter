@@ -1,25 +1,24 @@
-import { Identifier as IdentifierNode, Node, isIdentifier } from '@babel/types';
-import { Formatter, FormatterContext } from '../internal.js';
+import { Identifier as IdentifierNode, isIdentifier } from '@babel/types';
+import { FormatterContext } from '../context.js';
 
-export default function Identifier( node: Node, context: FormatterContext, format: Formatter ): string {
+export default function Identifier( context: FormatterContext ): string {
+	const { node } = context;
+
 	if ( !isIdentifier( node ) ) {
 		throw new Error( 'Incorrect node type' );
 	}
 
-	const typeAnnotation = formatTypeAnnotation( node, context, format );
+	const typeAnnotation = formatTypeAnnotation( node, context );
 
 	return `${ node.name }${ typeAnnotation }`;
 }
 
-function formatTypeAnnotation( identifier: IdentifierNode, context: FormatterContext, format: Formatter ): string {
-	if ( !identifier.typeAnnotation ) {
+function formatTypeAnnotation( node: IdentifierNode, context: FormatterContext ): string {
+	if ( !node.typeAnnotation ) {
 		return '';
 	}
 
-	context = {
-		...context,
-		node: identifier
-	};
+	const formattedTypeAnnotation = context.formatDescendant( node.typeAnnotation );
 
-	return `: ${ format( identifier.typeAnnotation, context, format ) }`;
+	return `: ${ formattedTypeAnnotation }`;
 }
