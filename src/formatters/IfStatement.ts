@@ -8,11 +8,13 @@ export default function IfStatement( context: FormatterContext ): string {
 		throw new Error( 'Incorrect node type' );
 	}
 
+	const previousNodeContext = context.getPreviousNodeContext();
+	const newLine = previousNodeContext ? '\n' : '';
 	const formattedTest = context.formatDescendant( node.test );
 	const formattedBody = formatBody( node, context );
 	const formattedAlternate = node.alternate ? ` else ${ formatAlternate( node, context ) }` : '';
 
-	return `if ( ${ formattedTest } ) ${ formattedBody }${ formattedAlternate }`;
+	return `${ newLine }if ( ${ formattedTest } ) ${ formattedBody }${ formattedAlternate }`;
 }
 
 function formatBody( node: IfStatementNode, context: FormatterContext ): string {
