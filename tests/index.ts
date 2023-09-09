@@ -21,3 +21,7 @@ test( 'format() formats imports', testFormatting, {
 test( 'format() formats if statements', testFormatting, {
 	fixture: '4-ifs'
 } );
+
+test( 'format() formats arrays', testFormatting, {
+	fixture: '5-arrays'
+} );

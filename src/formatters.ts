@@ -17,8 +17,16 @@ import BooleanLiteral from './formatters/BooleanLiteral.js';
 import ExpressionStatement from './formatters/ExpressionStatement.js';
 import NumericLiteral from './formatters/NumericLiteral.js';
 import { Formatter } from './formatNode.js';
+import VariableDeclaration from './formatters/VariableDeclaration.js';
+import ArrayExpression from './formatters/ArrayExpression.js';
+import SpreadElement from './formatters/SpreadElement.js';
 
 export default new Map<Node['type'], Formatter>( [
+	[
+		'ArrayExpression',
+		ArrayExpression
+	],
+
 	[
 		'ArrowFunctionExpression',
 		ArrowFunctionExpression
@@ -95,6 +103,11 @@ export default new Map<Node['type'], Formatter>( [
 	],
 
 	[
+		'SpreadElement',
+		SpreadElement
+	],
+
+	[
 		'StringLiteral',
 		StringLiteral
 	],
@@ -102,5 +115,10 @@ export default new Map<Node['type'], Formatter>( [
 	[
 		'TSTypeAnnotation',
 		TSTypeAnnotation
+	],
+
+	[
+		'VariableDeclaration',
+		VariableDeclaration
 	]
 ] );
