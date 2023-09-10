@@ -1,11 +1,9 @@
 import { Expression, SpreadElement, isArrayExpression, isIdentifier } from '@babel/types';
 import { FormatterContext } from '../context.js';
-import { indent } from '../utils/whitespace.js';
+import indent from '../utils/indent.js';
 
 export default function ArrayExpression( context: FormatterContext ): string {
 	const { node } = context;
-
-	context.state.indent++;
 
 	if ( !isArrayExpression( node ) ) {
 		throw new Error( 'Incorrect node type' );
@@ -20,14 +18,16 @@ export default function ArrayExpression( context: FormatterContext ): string {
 			return '';
 		}
 
-		return context.formatDescendant( element );
-	} ).join( `,\n${ indent( context.state.indent ) }` );
+		return context.formatDescendant( element, {
+			increaseIndent: true
+		} );
+	} ).join( `,\n${ indent( context.state.indent + 1 ) }` );
 
 	if ( isSimpleElementArray( node.elements ) ) {
 		return `[ ${ formattedElements } ]`;
 	}
 
-	return `[\n${ indent( context.state.indent ) }${ formattedElements }\n${ indent( context.state.indent - 1 ) }]`;
+	return `[\n${ indent( context.state.indent + 1 ) }${ formattedElements }\n${ indent( context.state.indent ) }]`;
 }
 
 function isSimpleElementArray( elements: Array<Expression | SpreadElement | null> ): boolean {

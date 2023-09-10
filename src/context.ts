@@ -6,12 +6,16 @@ export interface FormatterContextState {
 	indent: number;
 }
 
+export interface CreateDescendantContextOptions {
+	increaseIndent?: boolean;
+}
+
 export interface FormatterContext<N extends Node=Node> {
 	node: N;
 	parent: Node | null;
 	state: FormatterContextState;
-	createDescendantContext: ( node: Node ) => FormatterContext;
-	formatDescendant: ( node: Node ) => string;
+	createDescendantContext: ( node: Node, options?: CreateDescendantContextOptions ) => FormatterContext;
+	formatDescendant: ( node: Node, options?: CreateDescendantContextOptions ) => string;
 	getPreviousNodeContext: () => FormatterContext | null;
 	getNextNodeContext: () => FormatterContext | null;
 }
@@ -26,14 +30,23 @@ export function createContext(
 		parent,
 		state,
 
-		createDescendantContext( node: Node ): FormatterContext {
+		createDescendantContext(
+			node: Node,
+			{
+				increaseIndent = false
+			}: CreateDescendantContextOptions = {}
+		): FormatterContext {
 			const newState = { ...this.state };
+
+			if ( increaseIndent ) {
+				newState.indent++;
+			}
 
 			return createContext( node, this.node, newState );
 		},
 
-		formatDescendant( node: Node ): string {
-			const descendantContext = this.createDescendantContext( node );
+		formatDescendant( node: Node, options = {} ): string {
+			const descendantContext = this.createDescendantContext( node, options );
 
 			return formatNode( descendantContext );
 		},
