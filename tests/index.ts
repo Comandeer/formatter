@@ -25,3 +25,7 @@ test( 'format() formats if statements', testFormatting, {
 test( 'format() formats arrays', testFormatting, {
 	fixture: '5-arrays'
 } );
+
+test( 'format() correctly indents', testFormatting, {
+	fixture: '6-indents'
+} );
